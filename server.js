@@ -1,22 +1,20 @@
-var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 3000;
-  mongoose = require('mongoose'),
-  Task = require('./api/models/todoListModel'), //created model loading here
-  bodyParser = require('body-parser');
+import BodyParser from 'body-parser'
+import Express from 'express'
+import Mongoose from 'mongoose'
+import Routes from './api/routes/todoListRoutes'
+
+const port = process.env.PORT || 3000
+const MONGO_URI = 'mongodb://localhost/Tododb'
+
+const app = Express()
 
 // mongoose instance connection url connection
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Tododb');
+Mongoose.Promise = global.Promise
+Mongoose.connect(MONGO_URI)
 
+app.use(BodyParser.urlencoded({ extended: true }))
+app.use(BodyParser.json())
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+Routes(app) //register the route
 
-
-var routes = require('./api/routes/todoListRoutes'); //importing route
-routes(app); //register the route
-
-app.listen(port);
-
-console.log('todo list RESTful API server started on: ' + port);
+app.listen(port, () => console.log('todo list RESTful API server started on: ' + port))

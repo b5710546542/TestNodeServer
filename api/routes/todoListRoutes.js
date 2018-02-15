@@ -1,15 +1,12 @@
-'use strict';
-module.exports = function(app) {
-  var todoList = require('../controllers/todoListController');
+import TodoListController from '../controllers/todoListController'
 
-  // todoList Routes
+export default app => {
   app.route('/tasks')
-    .get(todoList.list_all_tasks)
-    .post(todoList.create_a_task);
-
+    .get(TodoListController.listAllTasks)
+    .post(TodoListController.createTask)
 
   app.route('/tasks/:taskId')
-    .get(todoList.read_a_task)
-    .put(todoList.update_a_task)
-    .delete(todoList.delete_a_task);
-};
+    .get(TodoListController.getTask)
+    .put(TodoListController.updateTask)
+    .delete(TodoListController.deleteTask);
+}
